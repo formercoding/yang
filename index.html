@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>羊</title>
+</head>
+<script>
+    var designWidth = 750, rem2px = 100,
+        docElement = document.documentElement;
+    // 根据不同的页面大小设置不同的rem初始值
+    docElement.style.fontSize = ((window.innerWidth / designWidth) * rem2px) + 'px';
+
+    // orientationchange为苹果的横屏事件
+    var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+    // 响应屏幕大小变化重置rem值
+    window.addEventListener(resizeEvt, function () {
+        docElement.style.fontSize = ((window.innerWidth / designWidth) * rem2px) + 'px';
+    }, false);
+</script>
+<style>
+    body {
+        background: #ffe;
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 1;
+        }
+    }
+
+    .cursor {
+        opacity: 0;
+        animation: blink 0.2s linear infinite;
+    }
+
+    #flower {
+        display: none;
+    }
+
+    .bubble {
+        box-sizing: content-box;
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 20%;
+        left: 55%;
+        animation: love-burst 4s infinite;
+        transform: translate(0, 0) scale(0);
+        transform-origin: center bottom;
+        border-radius: 50%;
+        font-size: 0;
+        box-shadow: inset 0 0 0 20px #fff;   
+    }
+
+    @keyframes love-burst {
+        50%, 100% {
+            box-shadow: inset 0 0 0 0 red;
+            transform: translate(0, -100px) scale(1);
+        }
+    }
+
+    .heart {
+        fill: #fff;
+        opacity: 0;
+        animation: love 4s forwards infinite;
+        transform: scale(0.5);
+    }
+
+    @keyframes love {
+        50% {
+            fill: red;
+            opacity: 1;
+        }
+    }
+
+    #txt {
+        font-size: 0.22rem;
+    }
+</style>
+
+<body>
+    <p id="txt"></p>
+    <canvas id="drawing"></canvas>
+    <img src="./5.jpg" alt="" id="flower">
+    <div class="bubble">
+        <svg class="heart" viewBox="0 0 32 32">
+            <path d="M23.6 2c-3.363 0-6.258 2.736-7.599 5.594-1.342-2.858-4.237-5.594-7.601-5.594-4.637 0-8.4 3.764-8.4 8.401 0 9.433 9.516 11.906 16.001 21.232 6.13-9.268 15.999-12.1 15.999-21.232 0-4.637-3.763-8.401-8.4-8.401z"></path>
+        </svg>
+    </div>
+</body>
+<script>
+    function draw() {
+        var drawing = document.getElementById("drawing"),
+            pic = document.getElementById('flower'); //获取描边图片
+        drawing.width = '1000';
+        drawing.height = '1000';
+        if (drawing.getContext) {
+            var content = drawing.getContext("2d"),
+                radian = 0,
+                radian_add = Math.PI / 10;
+            content.translate(250, 250);
+            function heart() {
+                X = getX1(radian);
+                Y = getY1(radian);
+                content.drawImage(pic, X, Y, 50, 50);   //在给定坐标绘制给定大小的图片
+                radian += radian_add;
+                if (radian > (2 * Math.PI)) { //绘制完整的心型线后取消间歇调用 
+                    clearInterval(intervalId);
+                }
+            }
+            intervalId = setInterval(heart, 100);  //设置间歇调用，间隔为100ms
+        }
+    }
+    function getX(t) {   //获取玫瑰线的X坐标
+        return 100 * Math.sin(4 * t) * Math.cos(t);
+    }
+
+    function getY(t) {  //获取玫瑰线的Y坐标
+        return 100 * Math.sin(4 * t) * Math.sin(t);
+    }
+
+    function getX1(t) {  //获取心型线的X坐标
+        return 15 * (16 * Math.pow(Math.sin(t), 3))
+    }
+
+    function getY1(t) {  //获取心型线的Y坐标
+        return -15 * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))
+    }
+
+    // draw();
+
+    var txt = '我是手写的一行文字,<br>你能不能看出来哇';
+    var txtEle = document.getElementById("txt");
+    var i = 0;
+
+    setInterval(() => {
+        txtEle.innerHTML = txt.slice(0, i) + '<span class="cursor">|</span>';
+        i++;
+    }, 200);
+</script>
+
+</html>
