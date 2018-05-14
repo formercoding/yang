@@ -76,8 +76,69 @@
         }
     }
 
+    body {
+        font-size: .22rem;
+    }
+
     #txt {
         font-size: 0.22rem;
+    }
+
+    body {
+        text-align: center;
+    }
+
+    p {
+        width: 100%;
+        position: fixed;
+        display: inline-block;
+        font-size: .2rem;
+        left: 0;
+        bottom: 50px;
+        transition: all linear 1s;
+    }
+
+    p span {
+        text-align: center;
+    }
+
+    .text{
+        font-size: .6rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        fill: none;
+        stroke-width: 1px;
+        /* stroke-dasharray: 90 100; */
+        animation: stroke 6s infinite linear;
+    }
+    .text-1{
+        stroke: #3498db;
+        text-shadow: 0 0 1px #3498db;
+        animation-delay: -1.5s;
+    }
+    .text-2{
+        stroke: #f39c12;
+        text-shadow: 0 0 1px #f39c12;
+        animation-delay: -3s;
+    }
+    .text-3{
+        stroke: #e74c3c;
+        text-shadow: 0 0 1px #e74c3c;
+        animation-delay: -4.5s;
+    }
+    .text-4{
+        stroke: #9b59b6;
+        text-shadow: 0 0 1px #9b59b6;
+        animation-delay: -6s;
+    }
+
+    @keyframes stroke {
+    100% {
+        stroke-dashoffset: -400;
+    }
+    }
+    svg {
+        font-size: .2rem;
     }
 </style>
 
@@ -90,6 +151,21 @@
             <path d="M23.6 2c-3.363 0-6.258 2.736-7.599 5.594-1.342-2.858-4.237-5.594-7.601-5.594-4.637 0-8.4 3.764-8.4 8.401 0 9.433 9.516 11.906 16.001 21.232 6.13-9.268 15.999-12.1 15.999-21.232 0-4.637-3.763-8.401-8.4-8.401z"></path>
         </svg>
     </div>
+    <span id="test">洋洋我爱你</span>
+    <svg width="100%" height="100">
+        <text text-anchor="middle" x="50%" y="50%" class="text text-1">
+            别人碰你一下，我都觉得是在抢。
+        </text>
+        <!-- <text text-anchor="middle" x="50%" y="50%" class="text text-2">
+            别人碰你一下，我都觉得是在抢。
+        </text>
+        <text text-anchor="middle" x="50%" y="50%" class="text text-3">
+            别人碰你一下，我都觉得是在抢。
+        </text>
+        <text text-anchor="middle" x="50%" y="50%" class="text text-4">
+            别人碰你一下，我都觉得是在抢。
+        </text> -->
+    </svg>
 </body>
 <script>
     function draw() {
@@ -140,6 +216,66 @@
         txtEle.innerHTML = txt.slice(0, i) + '<span class="cursor">|</span>';
         i++;
     }, 200);
+</script>
+<script>
+    var loveWords = [
+        '好希望陪着你一直到老，让你做我手心里的宝。',
+        '你是我每天睡觉前最想聊天的人',
+        '我有所念人，隔在远远乡',
+        '自从喜欢你 我的PH 总是小于7',
+        '我说所有的酒都不如你',
+        '我说 你是人间的四月天',
+        '思卿如满月，夜夜减清辉',
+        '多想有一天醒来，阳光在，明媚在，爱情在，你在。',
+        '而今的远方，没有诗，亦没有梦。只是想和你一起走。',
+        '你就像烟火的美丽，那么美丽！',
+        '看不见时想见你，能看见的时候，想每分每秒都和你腻在一起。',
+        '我只想把我全部的温柔都留给你。',
+        '因为有你在，月光才格外美丽！',
+        '可以为你，与全世界为敌。',
+        '你那么可爱*^o^*我怎么会不哄你。',
+        '愿此间山有木兮卿有意，昨夜星辰恰似你。',
+        '让我再看你一眼，从南到北。',
+        '你不用多好 我喜欢就好 我没有很好 你不嫌弃就好',
+        '有了你什么都不缺，心再野也懂得拒绝。',
+        '世事如书，我愿做个逗号，待在你身边。',
+        '梦想不大，只一个你。',
+        '在有生之年遇见你，竟花光所有运气。',
+        '我爱这个世界，因为我爱你！',
+        '只要没住到你心里，都是客死他乡。',
+        '没有你的地方都是他乡，没有你的旅行都是流浪。',
+        '别人碰你一下，我都觉得是在抢。'
+    ]
+    var j = 0;
+
+    var timer = setInterval(() => {
+        if(j >= loveWords) {
+            clearInterval(timer);
+        }
+        var time = Date.now();
+        var v = 20;
+        var vx = parseInt(Math.cos(Math.random() * Math.PI / 2 + Math.PI / 4) * v);
+        var vy = parseInt(Math.sin(Math.random() * Math.PI / 2 + Math.PI / 4) * v);
+
+        var p = document.createElement("p");
+
+        (function(p, vx, vy) {
+            p.setAttribute('id', time);
+            p.setAttribute('class', time);
+
+            p.innerHTML = '<span>' + loveWords[j] + '</span>';
+
+            document.body.appendChild(p);
+
+            var timer2 = setInterval(() => {
+                p.style.top = parseInt(getComputedStyle(p).top) - vy + 'px';
+                p.style.left = parseInt(getComputedStyle(p).left) + vx + 'px';
+            }, 1000);
+
+            j++;
+        })(p, vx, vy)
+
+    }, 5000)
 </script>
 
 </html>
